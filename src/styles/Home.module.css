@@ -1,0 +1,22 @@
+
+
+.title {
+  margin: 0 auto ;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.button_sub_text {
+  opacity: 0.8;
+}
+
+.space_sm {
+  height: 16px;
+}
+.space_md {
+  height: 32px;
+}
+
+.center {
+  text-align: center;
+}
