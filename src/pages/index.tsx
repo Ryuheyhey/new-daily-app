@@ -20,7 +20,7 @@ type Props = {
 
 const index = (props: Props) => {
 
-  console.log(props.posts);
+  console.log(process.env.BASE_URL);
   
 
   return (
@@ -71,7 +71,7 @@ export default index
 // }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch('http://127.0.0.1:3000/api/daily')
+  const res = await fetch(`${process.env.BASE_URL}api/daily`)
   const {data} = await res.json()
   return {
     props: {
