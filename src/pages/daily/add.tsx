@@ -51,6 +51,7 @@ console.log(content_4);
       }),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
+        'User-Agent': '*',
       }
     }
     );

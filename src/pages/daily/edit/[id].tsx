@@ -193,7 +193,11 @@ export default DailyEdit
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const id = query.id
-  const res = await fetch(`${process.env.BASE_URL}api/daily/${id}`)
+  const res = await fetch(`${process.env.BASE_URL}api/daily/${id}`, 
+  {headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    'User-Agent': '*',
+  }})
   const {data} = await res.json()
 
   return {

@@ -71,7 +71,11 @@ export default index
 // }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${process.env.BASE_URL}api/daily`)
+  const res = await fetch(`${process.env.BASE_URL}api/daily`, 
+  {headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    'User-Agent': '*',
+  }})
   const {data} = await res.json()
   return {
     props: {
