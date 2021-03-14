@@ -1,3 +1,4 @@
+  
 import MainLayout from "../../layout/layout"
 import {DailyCard, TextLine, EditIconButton} from "../../components/index"
 import fetch from "node-fetch"
@@ -5,6 +6,8 @@ import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next"
 import { useCallback } from "react"
 import Router, { useRouter } from "next/router"
 import Link from "next/link"
+import moment from "moment"
+import styles from "../../styles/Home.module.css"
 
 type Props = {
   posts: {
@@ -24,7 +27,11 @@ const index = (props: Props) => {
   // ページが存在しない時の処理
   const router = useRouter()
   console.log(router.isFallback);
-  console.log(router.query.date);
+  console.log("routerDate: " + router.query.date);
+  console.log(props);
+  const momentDate = moment(router.query.date).add(1,'days').toDate()
+  console.log("momentDate: " + momentDate);
+  
   
   if (router.isFallback) {
     // return (
@@ -45,7 +52,7 @@ const index = (props: Props) => {
       return (
         <MainLayout title={`進歩チェックリスト (${titleDate})`} link={"/"}>
             
-            {props.posts.length > 0 && (
+            {props.posts.length > 0 ? (
               props.posts.map((post, i) => {
                 const id = post._id.toString()
     
@@ -70,6 +77,13 @@ const index = (props: Props) => {
                 </div>
                 )
               })
+            ) : (
+              <>
+              <div className={styles.space_md} />
+              <div className={styles.space_md} />
+              <div className={styles.space_md} />
+              <div className={styles.center}>{titleDate} の投稿はありません</div>
+              </>
             )}
             <EditIconButton/>
         </MainLayout>
@@ -98,11 +112,13 @@ export default index
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
   const date = params.date
-  const res = await fetch(`${process.env.BASE_URL}daily/get/${date}`)
-  const posts = await res.json()
+  const res = await fetch(`${process.env.BASE_URL}api/daily/date/${date}`)
+  console.log(`${process.env.BASE_URL}api/daily/date/${date}`);
+  
+  const {data} = await res.json()
   return {
     props: {
-      posts
+      posts: data
     }
   }
 }
