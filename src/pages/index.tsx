@@ -22,7 +22,6 @@ const index = (props: Props) => {
 
   console.log(process.env.BASE_URL);
   
-
   return (
     <MainLayout title={"進歩チェックリスト"} link={"/"}>
         
@@ -71,11 +70,14 @@ export default index
 // }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${process.env.BASE_URL}api/daily`, 
-  {headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-    'User-Agent': '*',
-  }})
+  const res = await fetch(`${process.env.BASE_URL}api/daily`, {
+    method: "GET",
+    headers: {
+      // update with your user-agent
+      "User-Agent":'*', 
+      Accept: "application/json; charset=UTF-8",
+    },
+  })
   const {data} = await res.json()
   return {
     props: {
