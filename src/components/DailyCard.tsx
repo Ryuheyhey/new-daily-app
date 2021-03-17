@@ -31,9 +31,17 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       fontSize: "1.6rem",
       lineHeight: 1.8,
+      [theme.breakpoints.down('sm')]: {
+        // fontSize: "10px",
+        // marginBottom: "20px"
+        display: "none"
+      }
     },
     context: {
       opacity: 0.7,
+      [theme.breakpoints.down('sm')]: {
+        fontSize: "10px"
+      }
     },
     button: {
       opacity: 0.7,
