@@ -16,43 +16,40 @@ type Post = {
     content_1: string;
     content_2: string;
     content_3: string;
-    content_4: string;
     created: string;
-    title: string;
+    mileage: string;
     _id: string;
   };
 };
 
-const DailyDetail = ({ post }: Post) => {
+const RunDetail = ({ post }: Post) => {
   console.log({ post });
 
   const goToEdit = () => {
-    Router.push("/daily/edit/[id]", `/daily/edit/${post._id}`);
+    Router.push("/run/edit/[id]", `/run/edit/${post._id}`);
   };
 
   const goToHome = useCallback(() => {
     Router.push({
-      pathname: "/",
+      pathname: "/run",
     });
   }, []);
 
   return (
-    <MainLayout title={"進歩チェックリスト"} link={"/"}>
+    <MainLayout title={"陸上競技日誌"} link={"/run"}>
       <div className={styles.space_sm} />
-      <TextLine text={"今日進歩したこと"} />
-      <DetailCard content={post.title} />
+      <TextLine text={"今日の走行距離(km)"} />
+      <DetailCard content={post.mileage} />
       <div className={styles.space_sm} />
-      <TextLine text={"それをどう感じたか"} />
+      <TextLine text={"今日の反省・感覚など"} />
       <DetailCard content={post.content_1} />
       <div className={styles.space_sm} />
-      <TextLine text={"明日も進歩を維持するには"} />
+      <TextLine text={"その原因(なるべく深掘り)"} />
       <DetailCard content={post.content_2} />
       <div className={styles.space_sm} />
-      <TextLine text={"今日あった障害"} />
+      <TextLine text={"それを踏まえて今後どうする？"} />
       <DetailCard content={post.content_3} />
       <div className={styles.space_sm} />
-      <TextLine text={"明日その障害を避けるには"} />
-      <DetailCard content={post.content_4} />
       <div className={styles.space_md} />
       <div className={styles.center}>
         <PrimaryButton label={"編集する"} onClick={goToEdit} />
@@ -65,11 +62,11 @@ const DailyDetail = ({ post }: Post) => {
   );
 };
 
-export default DailyDetail;
+export default RunDetail;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const id = query.id;
-  const res = await fetch(`${process.env.BASE_URL}api/daily/${id}`, {
+  const res = await fetch(`${process.env.BASE_URL}api/run/${id}`, {
     method: "GET",
     headers: {
       // update with your user-agent

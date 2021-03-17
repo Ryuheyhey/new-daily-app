@@ -1,5 +1,5 @@
 import dbConnect from "../../../utils/dbConnect";
-import Daily from "../../../models/Daily";
+import RunDaily from "../../../models/RunDaily";
 
 dbConnect();
 
@@ -12,44 +12,34 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const daily = await Daily.findById(id).sort({ created: "desc" });
-        res.json({ success: true, data: daily });
-        if (!daily) {
+        const runDaily = await RunDaily.findById(id).sort({ created: "desc" });
+        if (!runDaily) {
           return res.status(400).json({ message: "投稿が存在しません。" });
         }
+        res.json({ success: true, data: runDaily });
       } catch (error) {
         return res.status(400).json({ message: "取得に失敗しました。" });
       }
       break;
     case "PUT":
       try {
-        //  const upDateDaily = Daily.findById(id, async (doc) => {
-        //       doc.title = req.body.title
-        //       doc.content_1 = req.body.content_1
-        //       doc.content_2 = req.body.content_2
-        //       doc.content_3 = req.body.content_3
-        //       doc.content_4 = req.body.content_4
-
-        //     })
-        //     const newDaily = await upDateDaily.save()
-        //     res.json(newDaily)
-        const daily = await Daily.findByIdAndUpdate(id, req.body, {
+        const runDaily = await RunDaily.findByIdAndUpdate(id, req.body, {
           new: true,
           runValidators: true,
         });
-        if (!daily) {
+        if (!runDaily) {
           return res
             .status(400)
             .json({ message: "更新する投稿が見つかりません。" });
         }
-        res.status(200).json({ message: "更新しました。", data: daily });
+        res.status(200).json({ message: "更新しました。", data: runDaily });
       } catch (error) {
         res.status(400).json({ message: "更新に失敗しました。" });
       }
       break;
     case "DELETE":
       try {
-        const deleteDaily = await Daily.deleteOne({ _id: id });
+        const deleteDaily = await RunDaily.deleteOne({ _id: id });
         if (!deleteDaily) {
           return res
             .status(400)

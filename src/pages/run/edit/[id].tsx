@@ -16,22 +16,20 @@ type Post = {
     content_1: string;
     content_2: string;
     content_3: string;
-    content_4: string;
     created: string;
-    title: string;
+    mileage: string;
     _id: string;
   };
 };
 
 const DailyEdit = ({ post }: Post) => {
-  const [title, setTitle] = useState<string>(post.title);
+  const [mileage, setMileage] = useState<string>(post.mileage);
   const [content_1, setContent1] = useState<string>(post.content_1);
   const [content_2, setContent2] = useState<string>(post.content_2);
   const [content_3, setContent3] = useState<string>(post.content_3);
-  const [content_4, setContent4] = useState<string>(post.content_4);
 
-  const handleTitle = useCallback((e) => {
-    setTitle(e.target.value);
+  const handleMileage = useCallback((e) => {
+    setMileage(e.target.value);
   }, []);
 
   const handleContent1 = useCallback((e) => {
@@ -46,64 +44,53 @@ const DailyEdit = ({ post }: Post) => {
     setContent3(e.target.value);
   }, []);
 
-  const handleContent4 = useCallback((e) => {
-    setContent4(e.target.value);
-  }, []);
-
-  console.log(title);
-  console.log(content_1);
-  console.log(content_2);
-  console.log(content_3);
-  console.log(content_4);
-
   const handleDelete = useCallback((id) => {
-    fetch(`/api/daily/${id}`, {
+    fetch(`/api/run/${id}`, {
       method: "DELETE",
     }).then(() => {
       Router.push({
-        pathname: "/",
+        pathname: "/run",
       });
     });
   }, []);
 
   const handleSubmit = (e) => {
-    fetch(`/api/daily/${post._id}/`, {
+    fetch(`/api/run/${post._id}/`, {
       method: "PUT",
       body: JSON.stringify({
-        title: title,
+        mileage: mileage,
         content_1: content_1,
         content_2: content_2,
         content_3: content_3,
-        content_4: content_4,
       }),
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
     }).then(() => {
-      Router.push("/");
+      Router.push("/run");
     });
     e.preventDefault();
   };
 
   return (
-    <MainLayout title={"進歩チェックリスト"} link={"/"}>
+    <MainLayout title={"陸上競技日誌"} link={"/run"}>
       <div className={styles.space_sm} />
       <form onSubmit={handleSubmit}>
         <TextLine text={"今日の出来事"} />
         <div style={{ padding: "1rem 1rem 0 1rem" }}>
           <DailyText
-            label={"今日進歩したことは？"}
+            label={"今日の走行距離(km)"}
             multiline={true}
             rows={4}
             fullWidth={true}
-            defaultValue={post.title}
-            onChange={handleTitle}
-            value={title}
+            defaultValue={post.mileage}
+            onChange={handleMileage}
+            value={mileage}
           />
         </div>
         <div style={{ padding: "1rem 1rem 0 1rem" }}>
           <DailyText
-            label={"それをどう感じた？"}
+            label={"今日の反省・感覚など"}
             multiline={true}
             rows={4}
             fullWidth={true}
@@ -114,7 +101,7 @@ const DailyEdit = ({ post }: Post) => {
         </div>
         <div style={{ padding: "1rem 1rem 0 1rem" }}>
           <DailyText
-            label={"明日も進歩を維持するには？"}
+            label={"その原因(なるべく深掘り)"}
             multiline={true}
             rows={4}
             fullWidth={true}
@@ -125,24 +112,13 @@ const DailyEdit = ({ post }: Post) => {
         </div>
         <div style={{ padding: "1rem 1rem 0 1rem" }}>
           <DailyText
-            label={"今日あった障害は？"}
+            label={"それを踏まえて今後どうする？"}
             multiline={true}
             rows={4}
             fullWidth={true}
             defaultValue={post.content_3}
             onChange={handleContent3}
             value={content_3}
-          />
-        </div>
-        <div style={{ padding: "1rem 1rem 0 1rem" }}>
-          <DailyText
-            label={"明日その障害を避けるには？"}
-            multiline={true}
-            rows={4}
-            fullWidth={true}
-            defaultValue={post.content_4}
-            onChange={handleContent4}
-            value={content_4}
           />
         </div>
         <div className={styles.space_md} />
@@ -165,7 +141,7 @@ export default DailyEdit;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const id = query.id;
-  const res = await fetch(`${process.env.BASE_URL}api/daily/${id}`, {
+  const res = await fetch(`${process.env.BASE_URL}api/run/${id}`, {
     method: "GET",
     headers: {
       // update with your user-agent

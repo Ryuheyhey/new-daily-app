@@ -1,5 +1,5 @@
 import dbConnect from "../../../utils/dbConnect";
-import Daily from "../../../models/Daily";
+import RunDaily from "../../../models/RunDaily";
 
 dbConnect();
 
@@ -9,23 +9,22 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const daily = await Daily.find({}).sort({ created: "desc" });
-        res.json({ success: true, data: daily });
+        const runDaily = await RunDaily.find({}).sort({ created: "desc" });
+        res.json({ success: true, data: runDaily });
       } catch (error) {
         res.status(400).json({ message: "取得に失敗しました。" });
       }
       break;
     case "POST":
       try {
-        const daily = new Daily({
-          title: req.body.title,
+        const runDaily = new RunDaily({
+          mileage: req.body.mileage,
           content_1: req.body.content_1,
           content_2: req.body.content_2,
           content_3: req.body.content_3,
-          content_4: req.body.content_4,
           created: Date.now(),
         });
-        const saveDaily = await daily.save();
+        const saveDaily = await runDaily.save();
         res.status(200).json(saveDaily);
         // res.send(saveChecklist)
       } catch (error) {

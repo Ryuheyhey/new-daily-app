@@ -1,38 +1,37 @@
-import MainLayout from "../layout/layout";
-import { DailyCard, TextLine, EditIconButton } from "../components/index";
+import MainLayout from "../../layout/layout";
+import { DailyCard, TextLine, EditIconButton } from "../../components/index";
 import fetch from "node-fetch";
 import { GetServerSideProps, GetStaticProps } from "next";
 import { useCallback } from "react";
 import Router from "next/router";
+import Link from "next/link";
 
 type Props = {
   posts: {
     content_1: string;
     content_2: string;
     content_3: string;
-    content_4: string;
     created: string;
-    title: string;
+    mileage: string;
     _id: string;
   }[];
 };
 
 const index = (props: Props) => {
-  console.log(process.env.BASE_URL);
   const goToAdd = useCallback(() => {
-    Router.push("/daily/add");
+    Router.push("/run/add");
   }, []);
 
   const goToDetail = useCallback((id) => {
-    Router.push("/daily/detail/[id]", `/daily/detail/${id}`);
+    Router.push("/run/detail/[id]", `/run/detail/${id}`);
   }, []);
 
   const goToEdit = useCallback((id) => {
-    Router.push("/daily/edit/[id]", `/daily/edit/${id}`);
+    Router.push("/run/edit/[id]", `/run/edit/${id}`);
   }, []);
 
   return (
-    <MainLayout title={"進歩チェックリスト"} link={"/"}>
+    <MainLayout title={"陸上競技日誌"} link={"/run"}>
       {props.posts.length > 0 &&
         props.posts.map((post, i) => {
           const id = post._id.toString();
@@ -50,10 +49,10 @@ const index = (props: Props) => {
               <TextLine text={`${year}/${month}`} />
               <DailyCard
                 id={post._id}
-                cardTitle={"進歩したこと"}
+                cardTitle={"走行距離"}
                 day={day}
                 weekday={weekday}
-                title={post.title}
+                title={post.mileage}
                 goToDetail={() => goToDetail(id)}
                 goToEdit={() => goToEdit(id)}
               />
@@ -68,7 +67,7 @@ const index = (props: Props) => {
 export default index;
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${process.env.BASE_URL}api/daily`, {
+  const res = await fetch(`${process.env.BASE_URL}api/run`, {
     method: "GET",
     headers: {
       // update with your user-agent

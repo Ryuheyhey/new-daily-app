@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import Daily from "../../../../models/Daily";
+import RunDaily from "../../../../models/RunDaily";
 const moment = require("moment");
 
 dbConnect();
@@ -13,7 +13,7 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const daily = await Daily.find({
+        const runDaily = await RunDaily.find({
           created: {
             $gte: moment(`${id}`).toDate(),
             $lt: moment(`${id}`).add(1, "days").toDate(),
@@ -21,8 +21,8 @@ export default async (req, res) => {
         })
           .sort({ created: "desc" })
           .sort({ created: "desc" });
-        res.json({ message: "取得に成功しました。", data: daily });
-        if (!daily) {
+        res.json({ message: "取得に成功しました。", data: runDaily });
+        if (!runDaily) {
           return res
             .status(400)
             .json({ message: `${id}日の投稿はありません。` });

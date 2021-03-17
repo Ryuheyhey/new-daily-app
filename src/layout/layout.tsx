@@ -1,19 +1,16 @@
-import {Header} from "../components/index"
+import { Header } from "../components/index";
 
 // type LayoutProps = {
 //   children: React.ReactNode
 // }
 
-
-
-const MainLayout = (props):JSX.Element => {
-
+const MainLayout = (props): JSX.Element => {
   return (
     <div>
-      <Header title={props.title} link={props.link}/>
+      <Header title={props.title} link={props.link} />
       <main>{props.children}</main>
     </div>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;

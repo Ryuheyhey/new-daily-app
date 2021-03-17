@@ -13,9 +13,8 @@ type Props = {
     content_1: string;
     content_2: string;
     content_3: string;
-    content_4: string;
     created: string;
-    title: string;
+    mileage: string;
     _id: string;
   }[];
 };
@@ -30,6 +29,14 @@ const index = (props: Props) => {
   console.log("momentDate: " + momentDate);
 
   if (router.isFallback) {
+    // return (
+    //   <MainLayout title={`進歩チェックリスト (${titleDate})`} link={"/"}>
+    //     <div>
+    //       {titleDate}の投稿は存在しません
+    //     </div>
+    //     <EditIconButton/>
+    //   </MainLayout>
+    // )
     return <div>Loading...</div>;
   } else {
     const date: any = router.query.date;
@@ -40,19 +47,19 @@ const index = (props: Props) => {
     console.log(titleDate);
 
     const goToAdd = useCallback(() => {
-      Router.push("/daily/add");
+      Router.push("/run/add");
     }, []);
 
     const goToDetail = useCallback((id) => {
-      Router.push("/daily/detail/[id]", `/daily/detail/${id}`);
+      Router.push("/run/detail/[id]", `/run/detail/${id}`);
     }, []);
 
     const goToEdit = useCallback((id) => {
-      Router.push("/daily/edit/[id]", `/daily/edit/${id}`);
+      Router.push("/run/edit/[id]", `/run/edit/${id}`);
     }, []);
 
     return (
-      <MainLayout title={`進歩チェックリスト (${titleDate})`} link={"/"}>
+      <MainLayout title={`陸上日誌 (${titleDate})`} link={"/run"}>
         {props.posts.length > 0 ? (
           props.posts.map((post, i) => {
             const id = post._id;
@@ -77,11 +84,11 @@ const index = (props: Props) => {
               <div key={i}>
                 <TextLine text={`${year}/${month}`} />
                 <DailyCard
-                  id={id}
+                  id={post._id}
+                  cardTitle={"走行距離"}
                   day={day}
-                  cardTitle={"進歩したこと"}
                   weekday={weekday}
-                  title={post.title}
+                  title={post.mileage}
                   goToDetail={() => goToDetail(id)}
                   goToEdit={() => goToEdit(id)}
                 />
@@ -104,24 +111,9 @@ const index = (props: Props) => {
 
 export default index;
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const res = await fetch('http://127.0.0.1:3000/index/get')
-//   const posts = await res.json()
-//   const paths = posts.map(post => ({
-//       params: {
-//         date: post.created.slice(0, 10)
-//       }
-//     }))
-
-//     return {
-//       paths,
-//       fallback: true,
-//     }
-// }
-
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const date = params.date;
-  const res = await fetch(`${process.env.BASE_URL}api/daily/date/${date}`, {
+  const res = await fetch(`${process.env.BASE_URL}api/run/date/${date}`, {
     method: "GET",
     headers: {
       // update with your user-agent
@@ -129,7 +121,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       Accept: "application/json; charset=UTF-8",
     },
   });
-  console.log(`${process.env.BASE_URL}api/daily/date/${date}`);
+  console.log(`${process.env.BASE_URL}api/run/date/${date}`);
 
   const { data } = await res.json();
   return {

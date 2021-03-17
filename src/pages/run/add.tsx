@@ -4,15 +4,15 @@ import styles from "../../styles/Home.module.css";
 import Router from "next/router";
 import { useCallback, useState } from "react";
 
-const DailyAdd = () => {
-  const [title, setTitle] = useState<string>("");
+const RunDailyAdd = () => {
+  const [mileage, setMileage] = useState<string>("");
   const [content_1, setContent1] = useState<string>("");
   const [content_2, setContent2] = useState<string>("");
   const [content_3, setContent3] = useState<string>("");
   const [content_4, setContent4] = useState<string>("");
 
-  const handleTitle = useCallback((e) => {
-    setTitle(e.target.value);
+  const handleMileage = useCallback((e) => {
+    setMileage(e.target.value);
   }, []);
 
   const handleContent1 = useCallback((e) => {
@@ -31,17 +31,12 @@ const DailyAdd = () => {
     setContent4(e.target.value);
   }, []);
 
-  console.log(title);
-  console.log(content_1);
-  console.log(content_2);
-  console.log(content_4);
-
   const handleSubmit = (e) => {
     // httpsメソッドを叩く
-    fetch("/api/daily", {
+    fetch("/api/run", {
       method: "POST",
       body: JSON.stringify({
-        title: title,
+        mileage: mileage,
         content_1: content_1,
         content_2: content_2,
         content_3: content_3,
@@ -52,28 +47,28 @@ const DailyAdd = () => {
         "User-Agent": "*",
       },
     });
-    Router.push("/");
+    Router.push("/run");
     e.preventDefault();
   };
 
   return (
-    <MainLayout title={"進歩チェックリスト"} link={"/"}>
+    <MainLayout title={"陸上競技日誌"} link={"/run"}>
       <div className={styles.space_sm} />
       <TextLine text={"今日の出来事"} />
       <form onSubmit={handleSubmit}>
         <div style={{ padding: "1rem 1rem 0 1rem" }}>
           <DailyText
-            label={"今日進歩したことは？"}
+            label={"今日の走行距離(km)"}
             multiline={true}
-            rows={4}
-            fullWidth={true}
-            onChange={handleTitle}
-            value={title}
+            rows={2}
+            fullWidth={false}
+            onChange={handleMileage}
+            value={mileage}
           />
         </div>
         <div style={{ padding: "1rem 1rem 0 1rem" }}>
           <DailyText
-            label={"それをどう感じた？"}
+            label={"今日の反省・感覚など"}
             multiline={true}
             rows={4}
             fullWidth={true}
@@ -83,7 +78,7 @@ const DailyAdd = () => {
         </div>
         <div style={{ padding: "1rem 1rem 0 1rem" }}>
           <DailyText
-            label={"明日も進歩を維持するには？"}
+            label={"その原因(なるべく深掘り)"}
             multiline={true}
             rows={4}
             fullWidth={true}
@@ -93,22 +88,12 @@ const DailyAdd = () => {
         </div>
         <div style={{ padding: "1rem 1rem 0 1rem" }}>
           <DailyText
-            label={"今日あった障害は？"}
+            label={"それを踏まえて今後どうする？"}
             multiline={true}
             rows={4}
             fullWidth={true}
             onChange={handleContent3}
             value={content_3}
-          />
-        </div>
-        <div style={{ padding: "1rem 1rem 0 1rem" }}>
-          <DailyText
-            label={"明日その障害を避けるには？"}
-            multiline={true}
-            rows={4}
-            fullWidth={true}
-            onChange={handleContent4}
-            value={content_4}
           />
         </div>
         <div className={styles.space_md} />
@@ -124,4 +109,4 @@ const DailyAdd = () => {
   );
 };
 
-export default DailyAdd;
+export default RunDailyAdd;
