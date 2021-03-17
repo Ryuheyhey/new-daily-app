@@ -48,10 +48,8 @@ const Header = (props: Props) => {
   };
 
   const menus: Menus = [
-    { title: "インナーワークライフ", link: "/inner" },
     { title: "進歩チェックリスト", link: "/" },
     { title: "陸上日誌", link: "/run" },
-    { title: "プログラミング日誌", link: "/programming" },
   ];
 
   const sideList = (

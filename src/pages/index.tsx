@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import { GetServerSideProps, GetStaticProps } from "next";
 import { useCallback } from "react";
 import Router from "next/router";
+import { makeStyles } from "@material-ui/core";
 
 type Props = {
   posts: {
@@ -17,7 +18,19 @@ type Props = {
   }[];
 };
 
+const useStyles = makeStyles({
+  card: {
+    borderRadius: "20px",
+    margin: "1rem auto",
+    width: "90%",
+    maxWidth: 750
+  }
+})
+
 const index = (props: Props) => {
+
+  const classes = useStyles()
+
   console.log(process.env.BASE_URL);
   const goToAdd = useCallback(() => {
     Router.push("/daily/add");
@@ -46,7 +59,7 @@ const index = (props: Props) => {
           const weekday = weeekdayStr[date.getDay()];
 
           return (
-            <div key={i}>
+            <div key={i} className={classes.card}>
               <TextLine text={`${year}/${month}`} />
               <DailyCard
                 id={post._id}
